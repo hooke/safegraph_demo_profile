@@ -236,9 +236,11 @@ import json
 
 def get_home_panel(patterns_dir=None,  drive=None):
     if(patterns_dir):
-        home_panel = pd.read_csv(os.path.join(patterns_dir, "home_panel_summary.csv"), dtype = {'census_block_group': str}).drop(['year', 'month','state'],axis='columns')
+        home_panel = pd.read_csv(os.path.join(patterns_dir, "home_panel_summary.csv"), dtype = {'census_block_group': str}).drop(['date_range_start','date_range_end','region','iso_country_code'
+],axis='columns')
     elif(drive):
-        home_panel = pd_read_csv_drive(get_drive_id('home_panel_summary.csv'), drive, dtype = {'census_block_group': str}).drop(['year', 'month','state'],axis='columns')
+        home_panel = pd_read_csv_drive(get_drive_id('home_panel_summary.csv'), drive, dtype = {'census_block_group': str}).drop(['date_range_start','date_range_end','region','iso_country_code'
+],axis='columns')
     home_panel = home_panel.groupby(['census_block_group']).sum().reset_index() # CLEAN -- there are some CBGs with records split across states, erroneously. 
     return(home_panel)
 
