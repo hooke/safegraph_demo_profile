@@ -570,10 +570,10 @@ def get_patterns_master(patterns_dir, drive=None, brands=None, sgpids=None, verb
 def get_census_master(demos_to_analyze, open_census_dir=None, drive=None, verbose=False):
     # Read the appropriate census files, given the categories requested, perform aggregations
     census_df, cbg_field_desc = get_raw_census_data(demos_to_analyze, open_census_dir, drive=drive, verbose=verbose)
-    census_df, cbg_field_desc_mod = reaggregate_census_data(census_df, cbg_field_desc, demos_to_analyze, verbose=verbose)
+    #census_df, cbg_field_desc_mod = reaggregate_census_data(census_df, cbg_field_desc, demos_to_analyze, verbose=verbose)
     # add new columns which re-normalize counts to fraction-within-demo-category for each CBG
     census_df = normalize_demos_to_fractions(census_df, demos_to_analyze, verbose=verbose)
-    return(census_df, cbg_field_desc_mod)
+    return(census_df, cbg_field_desc)#_mod)
 
 def combine_and_analyze(visitors_df, 
                         home_panel, 
