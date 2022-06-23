@@ -225,6 +225,7 @@ def get_raw_census_data(demos_to_analyze, open_census_data_dir, drive=None, verb
 def normalize_demos_to_fractions(cen_df, demos_to_analyze, verbose=False):
     for this_demo_cat in demos_to_analyze:
         demo_codes = get_final_table_ids(this_demo_cat)
+        if(verbose): print("Final table ids are:\n{0}".format(demo_codes))
         demo_totals = cen_df[demo_codes].sum(axis=1)
         for this_code in demo_codes:
             cen_df[this_code+"_frac"] = cen_df[this_code] / demo_totals
