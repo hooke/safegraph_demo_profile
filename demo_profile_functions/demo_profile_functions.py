@@ -447,6 +447,10 @@ def get_income_col_order():
     a,b = get_household_income_groups()
     return(pd.DataFrame({'demo_code' : [b[this] for this in  list(a.keys())], 'col_order' : list(range(len(list(a.keys()))))}))
 
+def get_occupation_col_order():
+    a,b = get_sex_by_occupation_groups()
+    return(pd.DataFrame({'demo_code' : [b[this] for this in  list(a.keys())], 'col_order' : list(range(len(list(a.keys()))))}))
+
 def get_edu_col_order():
     a,b = get_edu_attainment_groups()
     return(pd.DataFrame({'demo_code' : [b[this] for this in  list(a.keys())], 'col_order' : list(range(len(list(a.keys()))))}))
@@ -454,6 +458,10 @@ def get_edu_col_order():
 def get_age_col_order():
     a,b = get_age_by_sex_groups()
     return(pd.DataFrame({'demo_code' : [b[this] for this in  list(a.keys())], 'col_order' : list(range(len(list(a.keys()))))}))
+
+def get_sex_col_order():
+    col_order = get_final_table_ids('Median Age By Sex')
+    return(pd.DataFrame({'demo_code' : col_order, 'col_order' : list(range(len(col_order)))}))
 
 def get_race_col_order():
     col_order = get_final_table_ids('Race')
@@ -465,9 +473,11 @@ def get_hispanic_col_order():
                    
 def get_col_orders():
     return(pd.concat([get_income_col_order(), 
+                      get_occupation_col_order(),
                       get_edu_col_order(),
                       get_age_col_order(),
                       get_race_col_order(),
+                      get_sex_col_order(),
                      get_hispanic_col_order()]))
 
 
