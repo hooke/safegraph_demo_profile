@@ -109,6 +109,7 @@ def get_final_table_ids(field_level_1):
     
     
     final_codes = {'Sex By Age' : pull_vals_of_dict_into_list(age_final_codes),
+                   'Median Age By Sex' : ['B01002e2','B01002e3'],
                    'Hispanic Or Latino Origin' : ['B03003e3', 'B03003e2'],
                    'Race' : ['B02001e2','B02001e3','B02001e4','B02001e5','B02001e6','B02001e7','B02001e8'],
                    'Educational Attainment For The Population 25 Years And Over' : pull_vals_of_dict_into_list(edu_final_codes),
@@ -196,13 +197,14 @@ def reaggregate_census_data(cen_df, cbg_field_desc, demos_to_analyze, verbose=Fa
     return(cen_df, cbg_field_desc)
 
 def get_raw_census_data(demos_to_analyze, open_census_data_dir, drive=None, verbose=False):
-    # demos_to_analyze is a list of length 1 to 5 containing field_level_1 values  
+    # demos_to_analyze is a list of length 1 to 6 containing field_level_1 values  
     # open_census_data_dir is the path where the Open Census Data is located
     # alternatively if you pass a drive object from google coLab e.g. drive = GoogleDrive(gauth), 
     #.  then these functions will read from the public Google Drive sharing open census data. 
     # Note: OpenCensusData public GDrive folder: https://drive.google.com/drive/u/1/folders/1btSS6zo7_wJCCXAigkbhnaoeU-Voa9pG
     
     # These are the supported options for field_level_1 strings: 
+    #.   'Median Age By Sex',
     #    'Sex By Age', 
     #    'Race', 
     #    'Hispanic Or Latino Origin', 
