@@ -94,7 +94,25 @@ def get_sex_by_occupation_groups():
                             'Service Occupations' : 'C2401Serv'
                            }
     
-    return(occ_groups, occ_groups_new_codes)    
+    return(occ_groups, occ_groups_new_codes) 
+
+def get_mortgage_groups():
+    
+    mortgage_groups =  {'Housing Units Without A Mortgage' : ['B25081e8']
+                   'Housing Units With A Mortgage But Without A Second Mortgage' : ['B25081e7']
+                   'Housing Units With A Home Equity Loan Only' : ['B25081e5']
+                   'Housing Units With A Second Mortgage Only' : ['B25081e4']
+                   'Housing Units With Both Second Mortgage And Home Equity Loan' : ['B25081e6']
+                 }
+    
+    # Some new made-up codes
+    mortgage_groups_new_codes = {'Housing Units Without A Mortgage' : 'B25081WOM'
+                   'Housing Units With A Mortgage But Without A Second Mortgage' : 'B250WOSM'
+                   'Housing Units With A Home Equity Loan Only' : 'B2508HEL'
+                   'Housing Units With A Second Mortgage Only' : 'B2508WSM'
+                   'Housing Units With Both Second Mortgage And Home Equity Loan' : 'B25081WB'
+                 }  
+    return(mortgage_groups, mortgage_groups_new_codes)       
 
 def get_edu_attainment_groups():
     
@@ -126,6 +144,7 @@ def get_final_table_ids(field_level_1):
     inc_read_codes, inc_final_codes = get_household_income_groups()
     edu_read_codes, edu_final_codes = get_edu_attainment_groups()
     age_read_codes, age_final_codes = get_age_by_sex_groups()
+    mortgage_read_codes, mortgage_final_codes = get_mortgage_groups()
     
     
     final_codes = {'Sex By Age' : pull_vals_of_dict_into_list(age_final_codes),
@@ -134,7 +153,8 @@ def get_final_table_ids(field_level_1):
                    'Race' : ['B02001e2','B02001e3','B02001e4','B02001e5','B02001e6','B02001e7','B02001e8'],
                    'Educational Attainment For The Population 25 Years And Over' : pull_vals_of_dict_into_list(edu_final_codes),
                    'Aggregate Household Income In The Past 12 Months (In 2016 Inflation-Adjusted Dollars)' : pull_vals_of_dict_into_list(inc_final_codes),
-                   'Sex By Occupation For The Civilian Employed Population 16 Years And Over' : pull_vals_of_dict_into_list(occupation_final_codes)
+                   'Sex By Occupation For The Civilian Employed Population 16 Years And Over' : pull_vals_of_dict_into_list(occupation_final_codes),
+                   'Mortgage Status' : pull_vals_of_dict_into_list(mortgage_final_codes)
                   }
     
     return(final_codes[field_level_1])
@@ -194,6 +214,16 @@ def aggregate_occupation_vars(cen_df_, cbg_field_desc_):
    
     return(cen_df, cbg_field_desc_)    
 
+def aggregate_mortgage_variables(cen_df_, cbg_field_desc_):
+    
+    cen_df = cen_df_.copy() # to avoid assignment warning
+    mortgage_groups, mortgage_groups_new_codes = get_mortgage_groups()
+    field_level_1_str = 'Mortgage Status'
+    field_level_3_str = 'Owner-Occupied Housing Units -- (Estimate)'
+    cen_df, cbg_field_desc_ = aggregate_census_columns(cen_df,cbg_field_desc_, mortgage_groups, mortgage_groups_new_codes, field_level_1_str, field_level_3_str)
+   
+    return(cen_df, cbg_field_desc_)
+
 def aggregate_edu_variables(cen_df_, cbg_field_desc_):
     
     cen_df = cen_df_.copy() # to avoid assignment warning
@@ -222,6 +252,9 @@ def reaggregate_census_data(cen_df, cbg_field_desc, demos_to_analyze, verbose=Fa
     if 'Sex By Occupation For The Civilian Employed Population 16 Years And Over' in demos_to_analyze:
         cen_df, cbg_field_desc = aggregate_occupation_vars(cen_df, cbg_field_desc)
         if(verbose): print("Occupation aggregation complete.\n{0}".format(cen_df.shape))
+    if 'Mortgage Status' in demos_to_analyze:
+        cen_df, cbg_field_desc = aggregate_mortgage_vars(cen_df, cbg_field_desc)
+        if(verbose): print("Mortgage aggregation complete.\n{0}".format(cen_df.shape))
     
     # Drop all the columns that are not essential to our cause
     columns_to_keep = flatten_list([flatten_list(get_final_table_ids(demo)) for demo in demos_to_analyze]) + ['census_block_group', 'B01001e1']
@@ -231,7 +264,7 @@ def reaggregate_census_data(cen_df, cbg_field_desc, demos_to_analyze, verbose=Fa
     return(cen_df, cbg_field_desc)
 
 def get_raw_census_data(demos_to_analyze, open_census_data_dir, drive=None, verbose=False):
-    # demos_to_analyze is a list of length 1 to 7 containing field_level_1 values  
+    # demos_to_analyze is a list of length 1 to 8 containing field_level_1 values  
     # open_census_data_dir is the path where the Open Census Data is located
     # alternatively if you pass a drive object from google coLab e.g. drive = GoogleDrive(gauth), 
     #.  then these functions will read from the public Google Drive sharing open census data. 
@@ -244,7 +277,8 @@ def get_raw_census_data(demos_to_analyze, open_census_data_dir, drive=None, verb
     #    'Hispanic Or Latino Origin', 
     #    'Educational Attainment For The Population 25 Years And Over',
     #    'Aggregate Household Income In The Past 12 Months (In 2016 Inflation-Adjusted Dollars)'
-    #.   'Sex By Occupation For The Civilian Employed Population 16 Years And Over'
+    #.   'Sex By Occupation For The Civilian Employed Population 16 Years And Over',
+    #    'Mortgage Status'
     
     cbg_field_desc = get_cbg_field_desc(ocd_dir=open_census_data_dir, drive=drive)
     prefixes = set(get_census_prefix(demos_to_analyze, cbg_field_desc) + ['b01']) # 'b01' we need for total_population
@@ -455,6 +489,11 @@ def get_edu_col_order():
     a,b = get_edu_attainment_groups()
     return(pd.DataFrame({'demo_code' : [b[this] for this in  list(a.keys())], 'col_order' : list(range(len(list(a.keys()))))}))
 
+def get_mortgage_col_order():
+    a,b = get_mortgage_groups()
+    return(pd.DataFrame({'demo_code' : [b[this] for this in  list(a.keys())], 'col_order' : list(range(len(list(a.keys()))))}))
+
+
 def get_age_col_order():
     a,b = get_age_by_sex_groups()
     return(pd.DataFrame({'demo_code' : [b[this] for this in  list(a.keys())], 'col_order' : list(range(len(list(a.keys()))))}))
@@ -478,6 +517,7 @@ def get_col_orders():
                       get_age_col_order(),
                       get_race_col_order(),
                       get_sex_col_order(),
+                      get_mortgage_col_order(),
                      get_hispanic_col_order()]))
 
 
