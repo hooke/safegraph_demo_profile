@@ -20,6 +20,7 @@ def get_drive_id(filename):
                 'cbg_b03.csv' : '1LVvZfx3hHiwN3YBh7pz43Y2KWV61OJFA',
                 'cbg_b15.csv' : '1xeSZShcX3egZFsalGOFD6Ze2jTof6ri-',
                 'cbg_b19.csv' : '1d9GscpWbrnP2xNLKKlgd6xLcFTzJydY4',
+                'cbg_c24.csv' : '1kEFPixW2Y53r3j2MqQdrxIKUBUEuC1zM',
                 'cbg_field_descriptions.csv' : '1a7_7WxY6eaUIObkVwfknl9C7nPltYxPd',
                 'cbg_fips_codes.csv' : '1dB_HeAw11TmsZ8MATMedC9j2csTRAiVm',
                 'home_panel_summary.csv': '1aiwhO6Pw1ZfUOoqUf6mS70s9tJgsAVp5',
