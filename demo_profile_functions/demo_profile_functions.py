@@ -99,18 +99,18 @@ def get_sex_by_occupation_groups():
 
 def get_mortgage_groups():
     
-    mortgage_groups =  {'Housing Units Without A Mortgage' : ['B25081e8']
-                   'Housing Units With A Mortgage But Without A Second Mortgage' : ['B25081e7']
-                   'Housing Units With A Home Equity Loan Only' : ['B25081e5']
-                   'Housing Units With A Second Mortgage Only' : ['B25081e4']
+    mortgage_groups =  {'Housing Units Without A Mortgage' : ['B25081e8'],
+                   'Housing Units With A Mortgage But Without A Second Mortgage' : ['B25081e7'],
+                   'Housing Units With A Home Equity Loan Only' : ['B25081e5'],
+                   'Housing Units With A Second Mortgage Only' : ['B25081e4'],
                    'Housing Units With Both Second Mortgage And Home Equity Loan' : ['B25081e6']
                  }
     
     # Some new made-up codes
-    mortgage_groups_new_codes = {'Housing Units Without A Mortgage' : 'B25081WOM'
-                   'Housing Units With A Mortgage But Without A Second Mortgage' : 'B250WOSM'
-                   'Housing Units With A Home Equity Loan Only' : 'B2508HEL'
-                   'Housing Units With A Second Mortgage Only' : 'B2508WSM'
+    mortgage_groups_new_codes = {'Housing Units Without A Mortgage' : 'B25081WOM',
+                   'Housing Units With A Mortgage But Without A Second Mortgage' : 'B250WOSM',
+                   'Housing Units With A Home Equity Loan Only' : 'B2508HEL',
+                   'Housing Units With A Second Mortgage Only' : 'B2508WSM',
                    'Housing Units With Both Second Mortgage And Home Equity Loan' : 'B25081WB'
                  }  
     return(mortgage_groups, mortgage_groups_new_codes)       
