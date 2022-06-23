@@ -72,7 +72,7 @@ def get_sex_groups():
                             'Female' : 'B01Pfeml'
                            }
     
-    return(age_groups, age_groups_new_codes)    
+    return(sex_groups, sex_groups_new_codes)    
  
 def get_household_income_groups():
     inc_groups =  {'Less than $59,999' : ['B19001e2','B19001e3', 'B19001e4', 'B19001e5', 'B19001e6', 'B19001e7', 'B19001e8', 'B19001e9','B19001e10', 'B19001e11',],
