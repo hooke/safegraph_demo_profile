@@ -158,9 +158,19 @@ def aggregate_ageSex_vars(cen_df_, cbg_field_desc_):
     
     cen_df = cen_df_.copy() # to avoid assignment warning
     age_groups, age_groups_new_codes = get_age_by_sex_groups()
-    field_level_1_str = 'Sex By Age'
+    field_level_1_str = 'Age'
     field_level_3_str = 'Total Population -- (Estimate)'
     cen_df, cbg_field_desc_ = aggregate_census_columns(cen_df, cbg_field_desc_, age_groups, age_groups_new_codes, field_level_1_str, field_level_3_str)
+   
+    return(cen_df, cbg_field_desc_)
+
+def aggregate_sex_vars(cen_df_, cbg_field_desc_):
+    
+    cen_df = cen_df_.copy() # to avoid assignment warning
+    sex_groups, sex_groups_new_codes = get_sex_groups()
+    field_level_1_str = 'Sex'
+    field_level_3_str = 'Total Population -- (Estimate)'
+    cen_df, cbg_field_desc_ = aggregate_census_columns(cen_df, cbg_field_desc_, sex_groups, sex_groups_new_codes, field_level_1_str, field_level_3_str)
    
     return(cen_df, cbg_field_desc_)
 
