@@ -203,9 +203,12 @@ def reaggregate_census_data(cen_df, cbg_field_desc, demos_to_analyze, verbose=Fa
     if 'Educational Attainment For The Population 25 Years And Over' in demos_to_analyze:
         cen_df, cbg_field_desc = aggregate_edu_variables(cen_df, cbg_field_desc)
         if(verbose): print("Education aggregation complete.\n{0}".format(cen_df.shape))
-    if 'Sex By Age' in demos_to_analyze:
+    if 'Age' in demos_to_analyze:
         cen_df, cbg_field_desc = aggregate_ageSex_vars(cen_df, cbg_field_desc)
         if(verbose): print("Age aggregation complete.\n{0}".format(cen_df.shape))
+    if 'Sex' in demos_to_analyze:
+        cen_df, cbg_field_desc = aggregate_sex_vars(cen_df, cbg_field_desc)
+        if(verbose): print("Sex aggregation complete.\n{0}".format(cen_df.shape))
     if 'Aggregate Household Income In The Past 12 Months (In 2016 Inflation-Adjusted Dollars)' in demos_to_analyze:
         cen_df, cbg_field_desc = aggregate_HouseholdIncome_vars(cen_df, cbg_field_desc)
         if(verbose): print("Income aggregation complete.\n{0}".format(cen_df.shape))
