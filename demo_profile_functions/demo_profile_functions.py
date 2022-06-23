@@ -76,6 +76,24 @@ def get_household_income_groups():
                            }
     
     return(inc_groups, inc_groups_new_codes)
+ 
+def get_sex_by_occupation_groups():
+    occ_groups =  {'Management, Business, Science, And Arts Occupations' : ['C24010e10','C24010e11','C24010e12','C24010e13','C24010e14','C24010e15','C24010e16','C24010e17','C24010e18','C24010e4','C24010e40','C24010e41','C24010e42','C24010e43','C24010e44','C24010e45','C24010e46','C24010e47','C24010e48','C24010e49','C24010e5','C24010e50','C24010e51','C24010e52','C24010e53','C24010e54','C24010e6','C24010e7','C24010e8','C24010e9'],
+                  'Natural Resources, Construction, And Maintenance Occupations' : ['C24010e31','C24010e32','C24010e33','C24010e67','C24010e68','C24010e69'],
+                  'Production, Transportation, And Material Moving Occupations' : ['C24010e35','C24010e36','C24010e37','C24010e71','C24010e72','C24010e73'],
+                  'Sales And Office Occupations' : ['C24010e28','C24010e29','C24010e64','C24010e65'],
+                  'Service Occupations' : ['C24010e20','C24010e21','C24010e22']
+                 }
+    
+    # Some new made-up codes
+    occ_groups_new_codes = {'Management, Business, Science, And Arts Occupations' : 'C2401MBSA',
+                            'Natural Resources, Construction, And Maintenance Occupations' : 'C2401NRCM',
+                            'Production, Transportation, And Material Moving Occupations' : 'C2401PTMM',
+                            'Sales And Office Occupations' : 'C2401SaOf',
+                            'Service Occupations' : 'C2401Serv'
+                           }
+    
+    return(occ_groups, occ_groups_new_codes)    
 
 def get_edu_attainment_groups():
     
@@ -102,7 +120,8 @@ def pull_vals_of_dict_into_list(my_dict):
 def get_final_table_ids(field_level_1):
     # final_codes are the table_ids we expect in our final cleaned and aggregated data 
     # (including made up codes; fake agg codes are substituted in for the unaggregated codes_
-        
+
+    occupation_read_codes, occupation_final_codes = get_sex_by_occupation_groups()    
     inc_read_codes, inc_final_codes = get_household_income_groups()
     edu_read_codes, edu_final_codes = get_edu_attainment_groups()
     age_read_codes, age_final_codes = get_age_by_sex_groups()
@@ -113,7 +132,8 @@ def get_final_table_ids(field_level_1):
                    'Hispanic Or Latino Origin' : ['B03003e3', 'B03003e2'],
                    'Race' : ['B02001e2','B02001e3','B02001e4','B02001e5','B02001e6','B02001e7','B02001e8'],
                    'Educational Attainment For The Population 25 Years And Over' : pull_vals_of_dict_into_list(edu_final_codes),
-                   'Aggregate Household Income In The Past 12 Months (In 2016 Inflation-Adjusted Dollars)' : pull_vals_of_dict_into_list(inc_final_codes)
+                   'Aggregate Household Income In The Past 12 Months (In 2016 Inflation-Adjusted Dollars)' : pull_vals_of_dict_into_list(inc_final_codes),
+                   'Sex By Occupation For The Civilian Employed Population 16 Years And Over' : pull_vals_of_dict_into_list(occupation_final_codes)
                   }
     
     return(final_codes[field_level_1])
@@ -163,6 +183,16 @@ def aggregate_HouseholdIncome_vars(cen_df_, cbg_field_desc_):
    
     return(cen_df, cbg_field_desc_)
 
+def aggregate_occupation_vars(cen_df_, cbg_field_desc_):
+    
+    cen_df = cen_df_.copy() # to avoid assignment warning
+    occ_groups, occ_groups_new_codes = get_sex_by_occupation_groups()
+    field_level_1_str = 'Sex By Occupation For The Civilian Employed Population 16 Years And Over'
+    field_level_3_str = 'Civilian Employed Population 16 Years And Over -- (Estimate)'
+    cen_df, cbg_field_desc_ = aggregate_census_columns(cen_df, cbg_field_desc_, occ_groups, occ_groups_new_codes, field_level_1_str, field_level_3_str)
+   
+    return(cen_df, cbg_field_desc_)    
+
 def aggregate_edu_variables(cen_df_, cbg_field_desc_):
     
     cen_df = cen_df_.copy() # to avoid assignment warning
@@ -188,6 +218,9 @@ def reaggregate_census_data(cen_df, cbg_field_desc, demos_to_analyze, verbose=Fa
     if 'Aggregate Household Income In The Past 12 Months (In 2016 Inflation-Adjusted Dollars)' in demos_to_analyze:
         cen_df, cbg_field_desc = aggregate_HouseholdIncome_vars(cen_df, cbg_field_desc)
         if(verbose): print("Income aggregation complete.\n{0}".format(cen_df.shape))
+    if 'Sex By Occupation For The Civilian Employed Population 16 Years And Over' in demos_to_analyze:
+        cen_df, cbg_field_desc = aggregate_occupation_vars(cen_df, cbg_field_desc)
+        if(verbose): print("Occupation aggregation complete.\n{0}".format(cen_df.shape))
     
     # Drop all the columns that are not essential to our cause
     columns_to_keep = flatten_list([flatten_list(get_final_table_ids(demo)) for demo in demos_to_analyze]) + ['census_block_group', 'B01001e1']
@@ -197,7 +230,7 @@ def reaggregate_census_data(cen_df, cbg_field_desc, demos_to_analyze, verbose=Fa
     return(cen_df, cbg_field_desc)
 
 def get_raw_census_data(demos_to_analyze, open_census_data_dir, drive=None, verbose=False):
-    # demos_to_analyze is a list of length 1 to 6 containing field_level_1 values  
+    # demos_to_analyze is a list of length 1 to 7 containing field_level_1 values  
     # open_census_data_dir is the path where the Open Census Data is located
     # alternatively if you pass a drive object from google coLab e.g. drive = GoogleDrive(gauth), 
     #.  then these functions will read from the public Google Drive sharing open census data. 
@@ -210,6 +243,7 @@ def get_raw_census_data(demos_to_analyze, open_census_data_dir, drive=None, verb
     #    'Hispanic Or Latino Origin', 
     #    'Educational Attainment For The Population 25 Years And Over',
     #    'Aggregate Household Income In The Past 12 Months (In 2016 Inflation-Adjusted Dollars)'
+    #.   'Sex By Occupation For The Civilian Employed Population 16 Years And Over'
     
     cbg_field_desc = get_cbg_field_desc(ocd_dir=open_census_data_dir, drive=drive)
     prefixes = set(get_census_prefix(demos_to_analyze, cbg_field_desc) + ['b01']) # 'b01' we need for total_population
