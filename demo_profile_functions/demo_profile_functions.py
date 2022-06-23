@@ -117,9 +117,10 @@ def get_final_table_ids(field_level_1):
     inc_read_codes, inc_final_codes = get_household_income_groups()
     edu_read_codes, edu_final_codes = get_edu_attainment_groups()
     age_read_codes, age_final_codes = get_age_by_sex_groups()
+    sex_read_codes, sex_final_codes = get_sex_groups()
     
-    
-    final_codes = {'Sex By Age' : pull_vals_of_dict_into_list(age_final_codes),
+    final_codes = {'Sex' : pull_vals_of_dict_into_list(sex_final_codes),
+                   'Age' : pull_vals_of_dict_into_list(age_final_codes),
                    'Hispanic Or Latino Origin' : ['B03003e3', 'B03003e2'],
                    'Race' : ['B02001e2','B02001e3','B02001e4','B02001e5','B02001e6','B02001e7','B02001e8'],
                    'Educational Attainment For The Population 25 Years And Over' : pull_vals_of_dict_into_list(edu_final_codes),
