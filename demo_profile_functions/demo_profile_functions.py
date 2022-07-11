@@ -15,15 +15,17 @@ def get_drive_id(filename):
 
     # Note: OpenCensusData public GDrive folder: https://drive.google.com/open?id=1btSS6zo7_wJCCXAigkbhnaoeU-Voa9pG
     # Note: Sample of Patterns data public GDrive folder: https://drive.google.com/open?id=1xC8RFmrF3f6laRH08kOPBRLHEwJ8c41h
-    drive_ids = {'cbg_b01.csv' : '1QqttoDRoKpZM2TyyRwJ8B9c5bYZrHysB',
-                'cbg_b02.csv' : '1Zqqf3iLDkDWPl2theLlUm_cAbvznj-Kx',
-                'cbg_b03.csv' : '1LVvZfx3hHiwN3YBh7pz43Y2KWV61OJFA',
-                'cbg_b15.csv' : '1xeSZShcX3egZFsalGOFD6Ze2jTof6ri-',
-                'cbg_b19.csv' : '1d9GscpWbrnP2xNLKKlgd6xLcFTzJydY4',
-                'cbg_b25.csv' : '1lyS_1D5NyY2lVIxZRdDIUrnEbxJI9Eh4',
-                'cbg_c24.csv' : '1kEFPixW2Y53r3j2MqQdrxIKUBUEuC1zM',
-                'cbg_field_descriptions.csv' : '1a7_7WxY6eaUIObkVwfknl9C7nPltYxPd',
-                'cbg_fips_codes.csv' : '1dB_HeAw11TmsZ8MATMedC9j2csTRAiVm',
+     # Note: SafeGraph OpenCensusData public GDrive folder: https://drive.google.com/drive/u/0/folders/1Thu78vlZ7KnRdXJllzeEErI90lzT6bSc
+    # Note: Below we set up OpenCensusData for 2020 year from the link above
+    drive_ids = {'cbg_b01.csv' : '17rWFYeItPE-umG0UNCy1qyWSkdOORcbb',
+                'cbg_b02.csv' : '1D-f12qY-2-H3EDvaQRkD6em-xZfqyfKe',
+                'cbg_b03.csv' : '1unS5dbtSqkkOB1eRrIrwnspPrenquDHi',
+                'cbg_b15.csv' : '1t0U-YwVNuk1e-fXn2uIUfBdIdqUfQoCh',
+                'cbg_b19.csv' : '1Byjq8haoCegHO0IjyYJ5Nkzy8TeVR_b_',
+                'cbg_b25.csv' : '1cB_n3ynJL7-VdfYD4b-nKnTRIIzqnIeg',
+                'cbg_c24.csv' : '1Eq5hJSeRcEeiBXmPwDBnpjtnDma3YUrn',
+                'cbg_field_descriptions.csv' : '1kIHGGzRBzQblvsWDPBHLoDl9Y4QjfBgb',
+                'cbg_fips_codes.csv' : '1EV7rsHPw80wIzb3OAp9mNlzSeo3-Fu91',
                 'home_panel_summary.csv': '1aiwhO6Pw1ZfUOoqUf6mS70s9tJgsAVp5',
                 'core_poi-patterns.csv' : '1vOiASCoWVIppoYK8DiyLShhH7xbZhfxA'
     }
